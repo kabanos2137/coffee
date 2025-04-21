@@ -1,0 +1,53 @@
+@keyframes lid-move {
+    0% { transform: rotate(0deg); transform-origin: 32px 10px; }
+    50% { transform: rotate(45deg); transform-origin: 32px 10px; }
+    100% { transform: rotate(0deg); transform-origin: 32px 10px; }
+}
+
+svg{
+    .background { fill: #00000000; }
+    .machine-button-on.on { fill: #ff0000; }
+    .machine-button-on.off { fill: #500000; }
+    .machine-button-make.on { fill: #00ff00; }
+    .machine-button-make.off { fill: #005000; }
+    .machine-button-clean.on { fill: #ffff00; }
+    .machine-button-clean.off { fill: #505000; }
+    .capsule-slot { fill: #333333; }
+    .cup { fill: #ddddff; }
+    .cup-detail { fill: #cccccc; }
+    .coffee { fill: #484129}
+    .coffee.is-a-cup { fill: url(#inside) }
+
+
+    &.main-menu{
+        transition: all 0.5s;
+    }
+
+    &.main-menu:hover{
+        transform: scale(1.1);
+    }
+}
+
+#coffee-machine-2 > svg{
+    opacity: 0.5;
+    & > .machine-body { fill: #bbbbbb; }
+    & > .machine-top { fill: #999999; }
+    & > .machine-panel { fill: #aaaaaa; }
+}
+
+#coffee-machine-1 > svg{
+    & > .machine-body { fill: #880000; }
+    & > .machine-top { fill: #660000; }
+    & > .machine-panel { fill: #770000; }
+}
+
+#coffee-machine-0 > svg{
+    & > .machine-body { fill: #555555; }
+    & > .machine-top { fill: #444444; }
+    & > .machine-panel { fill: #666666; }
+}
+
+.open-lid{
+    animation: lid-move 0.5s infinite ease-in-out;
+}
+
