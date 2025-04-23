@@ -1,3 +1,30 @@
+const ERRORS = {
+    NO_ERROR: {
+        name: "NO_ERROR",
+        description: "",
+        data: [0, 0, 0, 0, 0, 0],
+        divided: ["", "", ""]
+    },
+    VOLTAGE_OVER: {
+        name: "VOLTAGE_OVER",
+        description: "too much voltage applied",
+        data: [0, 1, 0, 0, 0, 1],
+        divided: ["too much voltage", "applied", ""]
+    },
+    VOLTAGE_UNDER: {
+        name: "VOLTAGE_UNDER",
+        description: "too little voltage applied",
+        data: [0, 0, 0, 0, 0, 0],
+        divided: ["too little voltage", "applied", ""]
+    },
+    SEVERE_DIRT: {
+        name: "SEVERE_DIRT",
+        description: "the cleanliness of the machine was neglected",
+        data: [1, 0, 0, 0, 0, 0],
+        divided: ["the cleanliness", "of the machine", "was neglected"]
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     let subtitle = document.querySelector("h6");
 
