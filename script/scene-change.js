@@ -148,6 +148,24 @@ const changeSceneToGameplay = (chosenCM) => {
             </section>
         `;
 
+        document.querySelectorAll(".outlet").forEach(outlet => {
+            outlet.addEventListener("click", () => {
+                const voltage = parseInt(outlet.id.split("-")[1]);
+                const currentMachineVoltage = currentCoffeeMachine.getPluggedInVoltage();
+                if(currentMachineVoltage > 0){
+                    if(currentMachineVoltage === voltage){
+                        outlet.children[1].innerHTML = POWER_OUTLET;
+                        currentCoffeeMachine.plugOut()
+                        playAudio("./audio/plug-out.mp3")
+                    }
+                }else{
+                    outlet.children[1].innerHTML = POWER_OUTLET_PLUG;
+                    currentCoffeeMachine.plugIn(voltage);
+                    playAudio("./audio/plug-in.mp3")
+                }
+            });
+        });
+
         main.classList.add("loaded")
     }, 700);
 }

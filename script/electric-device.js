@@ -88,6 +88,10 @@ class ElectricDevice {
         return this.#voltage
     }
 
+    getPluggedInVoltage() {
+        return this.#pluggedInVoltage
+    }
+
     getPower(){
         return this.#power
     }
