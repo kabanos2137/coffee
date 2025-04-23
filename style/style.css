@@ -62,63 +62,144 @@ main.details {
 }
 
 #info {
-        margin-top: 10%;
-        width: 75%;
-        height: 100%;
+    margin-top: 10%;
+    width: 75%;
+    height: 100%;
+
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+
+    & > article {
+        width: 100%;
 
         display: flex;
-        justify-content: start;
-        align-items: center;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
 
-        & > article {
-            width: 100%;
+        & > h5 {
+            margin: 10px 30px;
+        }
+
+        & > button {
+            color: white;
+            height: 50px;
+            width: 200px;
+            margin: 10px 30px;
+            font-family: "pixel", serif;
 
             display: flex;
+            align-items: center;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: space-evenly;
 
-            & > h5 {
-                margin: 10px 30px;
+            &#back-button {
+                background-color: #9f0000FF;
+                border: #8B0000FF 6px solid;
             }
 
-            & > button {
-                color: white;
-                height: 50px;
-                width: 200px;
-                margin: 10px 30px;
-                font-family: "pixel", serif;
+            &#forward-button {
+                background-color: #009f00FF;
+                border: #008B00FF 6px solid;
+            }
 
-                display: flex;
-                align-items: center;
-                flex-direction: row;
-                justify-content: space-evenly;
+            &#back-button > #arrow {
+                transition: all 0.5s;
+            }
 
-                &#back-button {
-                    background-color: #9f0000FF;
-                    border: #8B0000FF 6px solid;
-                }
+            &#back-button:hover > #arrow {
+                    translate: -20px;
+            }
 
-                &#forward-button {
-                    background-color: #009f00FF;
-                    border: #008B00FF 6px solid;
-                }
+            &#forward-button > #arrow {
+                transition: all 0.5s;
+            }
 
-                &#back-button > #arrow {
-                    transition: all 0.5s;
-                }
-
-                &#back-button:hover > #arrow {
-                        translate: -20px;
-                }
-
-                &#forward-button > #arrow {
-                    transition: all 0.5s;
-                }
-
-                &#forward-button:hover > #arrow {
-                    translate: 20px;
-                }
+            &#forward-button:hover > #arrow {
+                translate: 20px;
             }
         }
     }
+}
+
+.simulator {
+    height: 95%;
+    width: 95%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    & > section {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+        width: 95%;
+        height: 50%;
+    }
+
+    & > #top {
+
+    }
+
+    & > #bottom {
+        & > #outlets {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-direction: row;
+
+            & > .outlet {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                flex-direction: column;
+
+                text-align: center;
+
+                margin: 30px;
+
+                & > svg {
+                    transform: scale(200%);
+                }
+            }
+        }
+
+        & > #diagnosis {
+            transition: all 0.5s;
+
+            &:hover {
+                transform: scale(1.25);
+            }
+        }
+
+        & > #repair-button {
+            color: white;
+            height: 200px;
+            width: 50px;
+            margin: 10px 30px;
+            font-family: "pixel", serif;
+            writing-mode: vertical-lr;
+
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-evenly;
+
+
+            background-color: #00b6ae;
+            border: #00C7BFFF 6px solid;
+
+            & > span{
+                transition: all 0.5s;
+            }
+
+            &:hover > span {
+                transform: scale(1.1);
+            }
+        }
+    }
+}

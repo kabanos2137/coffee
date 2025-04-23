@@ -1,3 +1,5 @@
+let currentCoffeeMachine;
+
 const changeSceneToDetails = (chosenCM) => {
     let main = document.querySelector("main");
     main.classList.remove("loaded");
@@ -95,5 +97,57 @@ const changeSceneToSelection = () => {
             </section>
         `
         onLoad();
+    }, 700);
+}
+
+const changeSceneToGameplay = (chosenCM) => {
+    let main = document.querySelector("main");
+    currentCoffeeMachine = chosenCM === "coffee-machine-0" ? DeLigne : Schob;
+
+    main.classList.remove("loaded");
+    setTimeout(() => {
+        main.classList.remove("details")
+        main.classList.add("simulator")
+
+        main.innerHTML = `
+            <section id="top">
+                <section id="${chosenCM}" class="machine">
+                    ${COFFEE_MACHINE_NO_CUP}
+                </section>
+                <section id="shelves">
+                    ${SHELVES}
+                </section>
+            </section>
+            <section id="bottom">
+                <section id="outlets">
+                    <section class="outlet" id="v-200">
+                        <h4>200 V</h4>
+                        ${POWER_OUTLET}
+                    </section>
+                    <section class="outlet" id="v-230">
+                        <h4>230 V</h4>
+                        ${POWER_OUTLET}
+                    </section>
+                    <section class="outlet" id="v-300">
+                        <h4>300 V</h4>
+                        ${POWER_OUTLET}
+                    </section>
+                </section>
+                <section id="cup-dispenser">
+                    ${CUP_DISPENSER_NO_CUP}
+                </section>
+                <section id="trash-can">
+                    ${TRASH_CAN}
+                </section>
+                <section id="diagnosis">
+                    ${GET_NOTEPAD(ERRORS.NO_ERROR)}
+                </section>
+                <button id="repair-button">
+                    <span>REPAIR</span>
+                </button>
+            </section>
+        `;
+
+        main.classList.add("loaded")
     }, 700);
 }
