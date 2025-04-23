@@ -25,7 +25,7 @@ const ERRORS = {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+const onLoad = () => {
     let subtitle = document.querySelector("h6");
 
     document.querySelector("main").classList.add("loaded");
@@ -59,6 +59,10 @@ document.addEventListener("DOMContentLoaded", () => {
             subtitle.innerText = "SELECT YOUR COFFEE MACHINE"
         })
     });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    onLoad();
 });
 
 const playAudio = (url) => {

@@ -54,3 +54,71 @@ main {
     align-items: start;
     flex-direction: row;
 }
+
+main.details {
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+#info {
+        margin-top: 10%;
+        width: 75%;
+        height: 100%;
+
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        flex-direction: column;
+
+        & > article {
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            & > h5 {
+                margin: 10px 30px;
+            }
+
+            & > button {
+                color: white;
+                height: 50px;
+                width: 200px;
+                margin: 10px 30px;
+                font-family: "pixel", serif;
+
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                justify-content: space-evenly;
+
+                &#back-button {
+                    background-color: #9f0000FF;
+                    border: #8B0000FF 6px solid;
+                }
+
+                &#forward-button {
+                    background-color: #009f00FF;
+                    border: #008B00FF 6px solid;
+                }
+
+                &#back-button > #arrow {
+                    transition: all 0.5s;
+                }
+
+                &#back-button:hover > #arrow {
+                        translate: -20px;
+                }
+
+                &#forward-button > #arrow {
+                    transition: all 0.5s;
+                }
+
+                &#forward-button:hover > #arrow {
+                    translate: 20px;
+                }
+            }
+        }
+    }
