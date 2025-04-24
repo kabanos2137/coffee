@@ -38,7 +38,7 @@ const COFFEE_MACHINE = "<svg class=\"no-cup\" xmlns=\"http://www.w3.org/2000/svg
     "    </rect>\n" +
     "    <rect class=\"capsule-slot\" x=\"14\" y=\"4\" width=\"4\" height=\"2\"/>\n" +
     "    <rect class=\"is-a-cup cup\" x=\"12\" y=\"20\" width=\"8\" height=\"6\"/>\n" +
-    "    <rect class=\"cup-detail\" x=\"12\" y=\"26\" width=\"8\" height=\"1\"/>\n" +
+    "    <rect class=\"is-a-cup cup-detail\" x=\"12\" y=\"26\" width=\"8\" height=\"1\"/>\n" +
     "    <rect class=\"is-a-cup cup-detail\" x=\"11\" y=\"21\" width=\"1\" height=\"4\"/>\n" +
     "    <rect class=\"is-a-cup coffee\" x=\"13\" y=\"21\" width=\"6\" height=\"4.5\"/>\n" +
     "</svg>\n";

@@ -172,6 +172,29 @@ const changeSceneToGameplay = (chosenCM) => {
             });
         });
 
+        Array.from(document.querySelectorAll(".machine > svg > .is-a-cup")).forEach(element => {
+            element.addEventListener("click", () => {
+                const machine = document.querySelector(".machine > svg")
+                if(!machine.classList.contains("no-cup")){
+                    currentCoffeeMachine.removeCup();
+                    machine.classList.add("no-cup")
+                    playAudio("./audio/trash.mp3")
+
+                    document.getElementById("inside").innerHTML = "<stop offset=\"0%\" stop-color=\"#ddddff\"/>\n"
+
+                    Array.from(document.querySelectorAll(".trash-can-lid")).forEach(lid => {
+                        lid.classList.add("open-lid");
+                    });
+
+                    setTimeout(() => {
+                        Array.from(document.querySelectorAll(".trash-can-lid")).forEach(lid => {
+                            lid.classList.remove("open-lid");
+                        });
+                    }, 500);
+                }
+            });
+        });
+
         main.classList.add("loaded")
     }, 700);
 }
@@ -200,5 +223,6 @@ const moveCup = () => {
         });
 
         machineSVG.classList.remove("no-cup")
+        currentCoffeeMachine.putACup();
     }
 }
