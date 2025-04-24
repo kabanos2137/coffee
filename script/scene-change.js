@@ -112,7 +112,7 @@ const changeSceneToGameplay = (chosenCM) => {
         main.innerHTML = `
             <section id="top">
                 <section id="${chosenCM}" class="machine">
-                    ${COFFEE_MACHINE_NO_CUP}
+                    ${COFFEE_MACHINE}
                 </section>
                 <section id="shelves">
                     ${SHELVES}
@@ -168,11 +168,37 @@ const changeSceneToGameplay = (chosenCM) => {
 
         Array.from(document.querySelectorAll("#cup-dispenser > svg > .not-a-cup")).forEach(cup => {
             cup.addEventListener("click", () => {
-                document.querySelector("#cup-dispenser").innerHTML = CUP_DISPENSER;
-                playAudio("./audio/slide-down.mp3")
+                dispenseCup();
             });
         });
 
         main.classList.add("loaded")
     }, 700);
+}
+
+const dispenseCup = () => {
+    document.querySelector("#cup-dispenser").innerHTML = CUP_DISPENSER;
+    playAudio("./audio/slide-down.mp3")
+
+    Array.from(document.querySelectorAll("#cup-dispenser > svg > .click-cup")).forEach(element => {
+        element.addEventListener("click", () => {
+            moveCup()
+        });
+    })
+}
+
+const moveCup = () => {
+    let machineSVG = document.querySelector(".machine > svg")
+    if(machineSVG.classList.contains("no-cup")){
+        document.querySelector("#cup-dispenser").innerHTML = CUP_DISPENSER_NO_CUP;
+        playAudio("./audio/cup-down.mp3");
+
+        Array.from(document.querySelectorAll("#cup-dispenser > svg > .not-a-cup")).forEach(cup => {
+            cup.addEventListener("click", () => {
+                dispenseCup();
+            });
+        });
+
+        machineSVG.classList.remove("no-cup")
+    }
 }

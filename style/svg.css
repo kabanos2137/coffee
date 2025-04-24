@@ -18,6 +18,12 @@ svg{
     .coffee { fill: #484129}
     .coffee.is-a-cup { fill: url(#inside) }
 
+    &.no-cup {
+        .cup { opacity: 0; }
+        .cup-detail { opacity: 0; }
+        .coffee { opacity: 0; }
+        .coffee.is-a-cup { opacity: 0; }
+    }
 
     &.main-menu{
         transition: all 0.5s;
