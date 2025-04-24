@@ -12,7 +12,7 @@ const CUP_DISPENSER = "<svg width=\"260\" height=\"320\" viewBox=\"0 0 26 32\" x
     "  <!-- Dispensed Cup -->\n" +
     "  <rect class=\"click-cup is-a-cup cup\" x=\"10\" y=\"20\" width=\"6\" height=\"5\" fill=\"#ddddff\"/>\n" +
     "  <rect class=\"click-cup is-a-cup cup-detail\" x=\"9\" y=\"21\" width=\"1\" height=\"3\" fill=\"#cccccc\"/>\n" +
-    "  <rect class=\"click-cup is-a-cup coffee\" x=\"11\" y=\"21\" width=\"4\" height=\"3.5\" fill=\"none\"/>\n" +
+    "  <rect class=\"click-cup is-a-cup\" x=\"11\" y=\"21\" width=\"4\" height=\"3.5\" fill=\"#ddddff\"/>\n" +
     "</svg>\n"
 
 const CUP_DISPENSER_NO_CUP = "<svg width=\"260\" height=\"320\" viewBox=\"0 0 26 32\" xmlns=\"http://www.w3.org/2000/svg\">\n" +

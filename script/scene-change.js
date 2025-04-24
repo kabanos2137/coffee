@@ -166,6 +166,13 @@ const changeSceneToGameplay = (chosenCM) => {
             });
         });
 
+        Array.from(document.querySelectorAll("#cup-dispenser > svg > .not-a-cup")).forEach(cup => {
+            cup.addEventListener("click", () => {
+                document.querySelector("#cup-dispenser").innerHTML = CUP_DISPENSER;
+                playAudio("./audio/slide-down.mp3")
+            });
+        });
+
         main.classList.add("loaded")
     }, 700);
 }
