@@ -146,6 +146,7 @@ const changeSceneToGameplay = (chosenCM) => {
                     <span>REPAIR</span>
                 </button>
             </section>
+            <h4 id="info"></h4>
         `;
 
         currentCoffeeMachine.setDOM(document.querySelector(".machine"));

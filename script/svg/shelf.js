@@ -41,4 +41,7 @@ const SHELVES = "<svg width=\"660\" height=\"300\" xmlns=\"http://www.w3.org/200
     "  <rect x=\"20\" y=\"70\" width=\"600\" height=\"10\" style=\"fill:#000000; opacity:0.2;\" />\n" +
     "  <!-- Bottom Shelf Shadow -->\n" +
     "  <rect x=\"20\" y=\"190\" width=\"600\" height=\"10\" style=\"fill:#000000; opacity:0.2;\" />\n" +
-    "</svg>\n"
+    "\n" +
+    generateCapsules(175, 30, 3) +
+    generateCapsules(175, 150, 3) +
+    "</svg>\n";

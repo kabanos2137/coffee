@@ -1,3 +1,18 @@
+function generateCapsules(xOffset, yOffset, count) {
+    let capsules = '';
+    const cols = 4; // 4 kapsułki na półkę
+    const rows = 3; // 3 rzędy kapsułek
+    const gap = 140; // Odstęp między kapsułkami
+
+    for (let i = 0; i < count; i++) {
+        let x = xOffset + (i % cols) * gap;
+        let y = yOffset + Math.floor(i / cols) * (gap - 20); // Przesunięcie w pionie dla każdego rzędu
+        capsules += `<g transform="translate(${x},${y})">${CAPSULE}</g>\n`;
+    }
+
+    return capsules;
+}
+
 const CAPSULE = "<svg width=\"32\" height=\"32\" viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
     "  <style>\n" +
     "    .capsule-top { fill: black; } \n" +
