@@ -18,8 +18,8 @@ const COFFEE_MACHINE_FOR_MENU = "<svg xmlns=\"http://www.w3.org/2000/svg\" viewB
 
 const COFFEE_MACHINE = "<svg class=\"no-cup\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\" width=\"320\" height=\"320\">\n" +
     "    <defs>\n" +
-    "        <linearGradient id=\"inside\" gradientTransform=\"rotate(90)\">\n" +
-    "            <stop offset=\"0%\" stop-color=\"#ddddff\"/>\n" +
+    "        <linearGradient id=\"coffee-gradient\" x1=\"0\" y1=\"1\" x2=\"0\" y2=\"0\">\n" +
+    "            <stop id=\"end-element\" offset=\"100%\" stop-color=\"#ddddff\"/>\n" +
     "        </linearGradient>\n" +
     "    </defs>\n" +
     "\n" +

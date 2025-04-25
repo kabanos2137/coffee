@@ -29,13 +29,16 @@ class CoffeeMachine extends HouseholdDevice {
         if(this.checkIfReadyToUse()){
             this.#DOM.querySelector(".machine-button-clean").classList.remove("off");
             this.#DOM.querySelector(".machine-button-clean").classList.add("on");
+            playAudio("./audio/pour.mp3")
             if(this.hasACup()){
-                //TODO
+                this.addLayer("#ccccff", 55, () => {
+                    this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
+                    this.#DOM.querySelector(".machine-button-clean").classList.add("off");
+                });
             }else{
                 let decrementInterval = 8000 / 20; // 20 steps in 8 seconds
                 let decrementValue = 20 / 20; // Total decrement divided by steps
                 let steps = 20;
-                playAudio("./audio/pour.mp3")
                 this.#streamID = setInterval(() => {
                     this.#cleanliness -= decrementValue;
                     if(this.#cleanliness < 20){
@@ -67,7 +70,6 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     off(){
-        console.log()
         if(this.getStatus() === "ON"){
             this.setStatus('OFF');
             this.#DOM.querySelector(".machine-button-on").classList.remove("on");
@@ -80,11 +82,12 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     putACup(){
-        console.log(this.#cup, this.#streamID);
         if(this.#cup !== undefined || this.#streamID !== undefined){
             return false
         }else{
-            this.#cup = {}
+            this.#cup = {
+                fullness: 0
+            }
             return true;
         }
     }
@@ -95,6 +98,9 @@ class CoffeeMachine extends HouseholdDevice {
 
     removeCup(){
         if(this.#cup !== undefined && this.#streamID === undefined){
+            const gradient = this.#DOM.querySelector("#coffee-gradient");
+            gradient.innerHTML =
+                "            <stop id=\"end-element\" offset=\"100%\" stop-color=\"#ddddff\"/>\n"
             let cup = this.#cup;
             this.#cup = undefined;
             return cup;
@@ -117,6 +123,50 @@ class CoffeeMachine extends HouseholdDevice {
 
     getWaterTankCapacity(){
         return this.#waterTankCapacity
+    }
+
+    addLayer(color, fluidEnd, onFinish){
+        const gradient = this.#DOM.querySelector("#coffee-gradient");
+        const endElement = this.#DOM.querySelector("#end-element");
+        const start = this.#cup.fullness;
+        const end = start + fluidEnd;
+        const step = (end - start) / (8 * 60);
+
+        const stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+        const stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+
+        stop1.setAttribute("offset", `${start}%`);
+        stop1.setAttribute("stop-color", color);
+
+        stop2.setAttribute("offset", `${start}%`);
+        stop2.setAttribute("stop-color", color);
+
+        gradient.insertBefore(stop1, endElement);
+        gradient.insertBefore(stop2, endElement);
+
+        let current = start;
+        this.#streamID = setInterval(() => {
+            current += step;
+
+            if(current <= 100){
+                endElement.setAttribute("offset", `${current}%`);
+                stop2.setAttribute("offset", `${current}%`);
+                this.#cup.fullness = current;
+            }else{
+                this.#cleanliness -= 0.1;
+                if(this.#cleanliness < 20){
+                    this.setError(ERRORS.SEVERE_DIRT);
+                }
+            }
+
+            if (current >= end) {
+                current = end;
+                this.#cup.fullness = current;
+                clearInterval(this.#streamID);
+                if (onFinish) onFinish();
+                this.#streamID = undefined;
+            }
+        }, 1000 / 60);
     }
 }
 

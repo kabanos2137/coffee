@@ -183,8 +183,6 @@ const changeSceneToGameplay = (chosenCM) => {
                     machine.classList.add("no-cup")
                     playAudio("./audio/trash.mp3")
 
-                    document.getElementById("inside").innerHTML = "<stop offset=\"0%\" stop-color=\"#ddddff\"/>\n"
-
                     Array.from(document.querySelectorAll(".trash-can-lid")).forEach(lid => {
                         lid.classList.add("open-lid");
                     });

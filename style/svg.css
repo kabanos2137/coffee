@@ -16,7 +16,7 @@ svg{
     .cup { fill: #ddddff; }
     .cup-detail { fill: #cccccc; }
     .coffee { fill: #484129}
-    .coffee.is-a-cup { fill: url(#inside) }
+    .coffee.is-a-cup { fill: url(#coffee-gradient) }
 
     &.no-cup {
         .cup { opacity: 0; }
