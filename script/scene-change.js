@@ -223,6 +223,17 @@ const changeSceneToGameplay = (chosenCM) => {
             }
         });
 
+        document.querySelector("#diagnosis").addEventListener("click", () => {
+            document.querySelector("#diagnosis").innerHTML = GET_NOTEPAD(currentCoffeeMachine.getError());
+            playAudio("./audio/write.mp3");
+        })
+
+        document.querySelector("#repair-button").addEventListener("click", () => {
+            document.querySelector("#diagnosis").innerHTML = GET_NOTEPAD(ERRORS.NO_ERROR);
+            currentCoffeeMachine.repair();
+            playAudio("./audio/repair.mp3");
+        })
+
         main.classList.add("loaded")
     }, 700);
 }
