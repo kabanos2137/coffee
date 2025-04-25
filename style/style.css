@@ -128,7 +128,6 @@ main.details {
     width: 95%;
 
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
 
@@ -138,11 +137,12 @@ main.details {
         align-items: center;
         flex-direction: row;
         width: 95%;
-        height: 50%;
+        height: calc(50% - 25px);
     }
 
-    & > #top {
-
+    & > h4 {
+        display: block;
+        height: 50px;
     }
 
     & > #bottom {

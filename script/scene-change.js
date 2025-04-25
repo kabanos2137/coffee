@@ -110,6 +110,7 @@ const changeSceneToGameplay = (chosenCM) => {
         main.classList.add("simulator")
 
         main.innerHTML = `
+            <h4 id="info"></h4>
             <section id="top">
                 <section id="${chosenCM}" class="machine">
                     ${COFFEE_MACHINE}
@@ -146,10 +147,28 @@ const changeSceneToGameplay = (chosenCM) => {
                     <span>REPAIR</span>
                 </button>
             </section>
-            <h4 id="info"></h4>
         `;
 
         currentCoffeeMachine.setDOM(document.querySelector(".machine"));
+
+        Array.from(document.querySelectorAll(".capsule-group")).forEach((element, index) => {
+            element.addEventListener("mouseover", () => {
+                document.querySelector("#info").innerText = COFFEE_TYPES[index];
+            })
+
+            element.addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
+        });
+
+        document.querySelector(".machine-button-on").addEventListener("mouseover", () => {
+            document.querySelector("#info").innerText = "Power Button";
+        });
+
+        document.querySelector(".machine-button-clean").addEventListener("mouseover", () => {
+            document.querySelector("#info").innerText = "Cleaning Button";
+        });
+
+        document.querySelector(".machine-button-on").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
+        document.querySelector(".machine-button-clean").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
 
         document.querySelectorAll(".outlet").forEach(outlet => {
             outlet.addEventListener("click", () => {

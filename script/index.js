@@ -1,6 +1,16 @@
 let streamAudio;
 let audio;
 
+
+const COFFEE_TYPES = [
+  "Espresso",
+  "Americano",
+  "Latte",
+  "Cappuccino",
+  "Mocha",
+  "Macchiato"
+];
+
 const ERRORS = {
     NO_ERROR: {
         name: "NO_ERROR",

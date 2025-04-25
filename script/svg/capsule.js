@@ -7,7 +7,7 @@ function generateCapsules(xOffset, yOffset, count) {
     for (let i = 0; i < count; i++) {
         let x = xOffset + (i % cols) * gap;
         let y = yOffset + Math.floor(i / cols) * (gap - 20); // Przesunięcie w pionie dla każdego rzędu
-        capsules += `<g transform="translate(${x},${y})">${CAPSULE}</g>\n`;
+        capsules += `<g class="capsule-group" transform="translate(${x},${y})">${CAPSULE}</g>\n`;
     }
 
     return capsules;
