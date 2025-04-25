@@ -1,5 +1,5 @@
 class CoffeeMachine extends HouseholdDevice {
-    #status; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
+    #streamID; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
     constructor(psu, voltage, power, energyClass, MTBF, size, milkTankCapacity, waterTankCapacity, pressure, name, status) {
         super(psu, voltage, power, energyClass, MTBF, size);
         this.#milkTankCapacity = milkTankCapacity;
@@ -7,14 +7,63 @@ class CoffeeMachine extends HouseholdDevice {
         this.#pressure = pressure;
         this.#name = name;
         this.#cleanliness = 100;
-        this.#milkTank = 0;
-        this.#waterTank = 0;
+        this.#milkTank = 100;
+        this.#waterTank = 100;
         this.#hasACup = false;
         this.#cup = undefined;
+        this.#streamID = undefined;
+    }
+
+    repair(){
+        if(this.getUsable()) return;
+        this.setUsable(true);
+        this.#cleanliness = 100;
+        this.setError(ERRORS.NO_ERROR)
     }
 
     setDOM(dom){
         this.#DOM = dom;
+    }
+
+    startClean() {
+        if(this.checkIfReadyToUse()){
+            this.#DOM.querySelector(".machine-button-clean").classList.remove("off");
+            this.#DOM.querySelector(".machine-button-clean").classList.add("on");
+            if(this.hasACup()){
+                //TODO
+            }else{
+                let decrementInterval = 8000 / 20; // 20 steps in 8 seconds
+                let decrementValue = 20 / 20; // Total decrement divided by steps
+                let steps = 20;
+                playAudio("./audio/pour.mp3")
+                this.#streamID = setInterval(() => {
+                    this.#cleanliness -= decrementValue;
+                    if(this.#cleanliness < 20){
+                        this.setError(ERRORS.SEVERE_DIRT);
+                    }
+                    steps--;
+                    if (steps <= 0) {
+                        clearInterval(this.#streamID);
+                        this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
+                        this.#DOM.querySelector(".machine-button-clean").classList.add("off");
+                        this.#streamID = undefined;
+                    }
+                }, decrementInterval);
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    breakClean(){
+        if(this.#DOM.querySelector(".machine-button-clean").classList.contains("on")){
+            clearInterval(this.#streamID);
+            stopAudio();
+            this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
+            this.#DOM.querySelector(".machine-button-clean").classList.add("off");
+            this.#streamID = undefined;
+        }
     }
 
     off(){
@@ -23,17 +72,19 @@ class CoffeeMachine extends HouseholdDevice {
             this.setStatus('OFF');
             this.#DOM.querySelector(".machine-button-on").classList.remove("on");
             this.#DOM.querySelector(".machine-button-on").classList.add("off");
+            this.breakClean()
             return true;
         }else{
             return false;
         }
     }
 
-    putACup(cup = undefined){
-        if(this.#cup !== undefined){
+    putACup(){
+        console.log(this.#cup, this.#streamID);
+        if(this.#cup !== undefined || this.#streamID !== undefined){
             return false
         }else{
-            this.#cup = cup
+            this.#cup = {}
             return true;
         }
     }
@@ -43,23 +94,13 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     removeCup(){
-        if(this.#cup !== undefined){
+        if(this.#cup !== undefined && this.#streamID === undefined){
             let cup = this.#cup;
             this.#cup = undefined;
             return cup;
         }else{
             return false;
         }
-    }
-
-    fillWater(amount = 0){
-        this.#waterTank += amount;
-        return this.#waterTankCapacity - this.#waterTank;
-    }
-
-    fillMilk(amount = 0){
-        this.#milkTank += amount;
-        return this.#milkTankCapacity - this.#milkTank;
     }
 
     getName(){
@@ -113,4 +154,4 @@ const Schob = new CoffeeMachine(
     0.7,
     13,
     "SCHOB MASSITO FUN MAS201F"
-)
+);

@@ -178,7 +178,8 @@ const changeSceneToGameplay = (chosenCM) => {
             element.addEventListener("click", () => {
                 const machine = document.querySelector(".machine > svg")
                 if(!machine.classList.contains("no-cup")){
-                    currentCoffeeMachine.removeCup();
+                    let remove = currentCoffeeMachine.removeCup();
+                    if(!remove) return;
                     machine.classList.add("no-cup")
                     playAudio("./audio/trash.mp3")
 
@@ -223,16 +224,31 @@ const changeSceneToGameplay = (chosenCM) => {
             }
         });
 
+        document.querySelector(".machine-button-clean").addEventListener("click", () => {
+            let button = document.querySelector(".machine-button-clean");
+
+            if(button.classList.contains("on")){
+                currentCoffeeMachine.breakClean();
+            }else if(button.classList.contains("off")){
+                let turnOn = currentCoffeeMachine.startClean();
+                if(turnOn){
+                    button.classList.remove("off")
+                    button.classList.add("on")
+                    playAudio("./audio/beep.mp3");
+                }
+            }
+        });
+
         document.querySelector("#diagnosis").addEventListener("click", () => {
             document.querySelector("#diagnosis").innerHTML = GET_NOTEPAD(currentCoffeeMachine.getError());
             playAudio("./audio/write.mp3");
-        })
+        });
 
         document.querySelector("#repair-button").addEventListener("click", () => {
             document.querySelector("#diagnosis").innerHTML = GET_NOTEPAD(ERRORS.NO_ERROR);
             currentCoffeeMachine.repair();
             playAudio("./audio/repair.mp3");
-        })
+        });
 
         main.classList.add("loaded")
     }, 700);
@@ -252,6 +268,9 @@ const dispenseCup = () => {
 const moveCup = () => {
     let machineSVG = document.querySelector(".machine > svg")
     if(machineSVG.classList.contains("no-cup")){
+        let put = currentCoffeeMachine.putACup()
+        if(!put) return;
+
         document.querySelector("#cup-dispenser").innerHTML = CUP_DISPENSER_NO_CUP;
         playAudio("./audio/cup-down.mp3");
 
@@ -262,6 +281,5 @@ const moveCup = () => {
         });
 
         machineSVG.classList.remove("no-cup")
-        currentCoffeeMachine.putACup();
     }
 }

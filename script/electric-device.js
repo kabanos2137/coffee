@@ -88,8 +88,18 @@ class ElectricDevice {
     }
 
     repair(){
-        this.#usable = true;
-        this.#error = '';
+        if(!this.getUsable()){
+            this.#usable = true;
+            this.#error = ERRORS.NO_ERROR;
+        }
+    }
+
+    setUsable(usable) {
+        this.#usable = usable;
+    }
+
+    getUsable() {
+        return this.#usable;
     }
 
     getVoltage(){
@@ -121,5 +131,9 @@ class ElectricDevice {
         }
 
         return `Device powered by ${psu} with nominal voltage of ${this.#voltage} [V] is ${status}. Device was broken ${this.#faultsCounter} times. Total number of device starts: ${this.#powerOnCounter}.`
+    }
+
+    setError(error){
+        this.#error = error;
     }
 }

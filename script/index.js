@@ -1,3 +1,5 @@
+let audio;
+
 const ERRORS = {
     NO_ERROR: {
         name: "NO_ERROR",
@@ -66,5 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const playAudio = (url) => {
-    new Audio(url).play();
+    audio = new Audio(url)
+    audio.play();
+}
+
+const stopAudio = () => {
+    audio.pause();
+    audio.currentTime = 0;
 }
