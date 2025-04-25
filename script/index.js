@@ -1,3 +1,4 @@
+let streamAudio;
 let audio;
 
 const ERRORS = {
@@ -67,12 +68,22 @@ document.addEventListener("DOMContentLoaded", () => {
     onLoad();
 });
 
-const playAudio = (url) => {
+const playAudio = (url, isStream = false) => {
+    if(isStream){
+        streamAudio = new Audio(url)
+        streamAudio.play();
+        return;
+    }
     audio = new Audio(url)
     audio.play();
 }
 
-const stopAudio = () => {
+const stopAudio = (isStream = false) => {
+    if(isStream){
+        streamAudio.pause();
+        streamAudio.currentTime = 0;
+        return;
+    }
     audio.pause();
     audio.currentTime = 0;
 }

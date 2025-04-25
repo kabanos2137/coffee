@@ -56,7 +56,7 @@ class ElectricDevice {
                     cause: ERRORS.VOLTAGE_OVER
                 }
             }else if(this.#pluggedInVoltage === this.#voltage){
-                this.#error = '';
+                this.#error = ERRORS.NO_ERROR;
                 this.#status = 'ON';
                 this.#powerOnCounter++;
                 return {

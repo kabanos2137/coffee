@@ -29,7 +29,7 @@ class CoffeeMachine extends HouseholdDevice {
         if(this.checkIfReadyToUse()){
             this.#DOM.querySelector(".machine-button-clean").classList.remove("off");
             this.#DOM.querySelector(".machine-button-clean").classList.add("on");
-            playAudio("./audio/pour.mp3")
+            playAudio("./audio/pour.mp3", true)
             if(this.hasACup()){
                 this.addLayer("#ccccff", 55, () => {
                     this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
@@ -62,7 +62,7 @@ class CoffeeMachine extends HouseholdDevice {
     breakClean(){
         if(this.#DOM.querySelector(".machine-button-clean").classList.contains("on")){
             clearInterval(this.#streamID);
-            stopAudio();
+            stopAudio(true);
             this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
             this.#DOM.querySelector(".machine-button-clean").classList.add("off");
             this.#streamID = undefined;

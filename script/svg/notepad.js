@@ -51,7 +51,7 @@ const GET_NOTEPAD = (error) => {
         `  <text x=\"18\" y=\"120\" class=\"small\">FROTHER: ${(error.data[4] === 1 ? "✘" : "✔")}</text>\n` +
         `  <text x=\"18\" y=\"140\" class=\"small\">ELECTRONICS: ${(error.data[5] === 1 ? "✘" : "✔")}</text>\n` +
         "  <text x=\"18\" y=\"160\" class=\"small\">DETAILED DESCRIPTION</text>\n" +
-        "  <text x=\"18\" y=\"180\" class=\"small\">OF THE FAULT:</text>\n" +
+        "  <text x=\"18\" y=\"180\" class=\"small\">OF NEWEST FAULT:</text>\n" +
         `  <text x=\"18\" y=\"200\" class=\"heavy\">${error.divided[0].toUpperCase()}</text>\n` +
         `  <text x=\"18\" y=\"220\" class=\"heavy\">${error.divided[1].toUpperCase()}</text>\n` +
         `  <text x=\"18\" y=\"240\" class=\"heavy\">${error.divided[2].toUpperCase()}</text>\n` +
