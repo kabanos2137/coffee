@@ -1,6 +1,6 @@
 class CoffeeMachine extends HouseholdDevice {
-    #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup;
-    constructor(psu, voltage, power, energyClass, MTBF, size, milkTankCapacity, waterTankCapacity, pressure, name) {
+    #status; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
+    constructor(psu, voltage, power, energyClass, MTBF, size, milkTankCapacity, waterTankCapacity, pressure, name, status) {
         super(psu, voltage, power, energyClass, MTBF, size);
         this.#milkTankCapacity = milkTankCapacity;
         this.#waterTankCapacity = waterTankCapacity;
@@ -11,6 +11,22 @@ class CoffeeMachine extends HouseholdDevice {
         this.#waterTank = 0;
         this.#hasACup = false;
         this.#cup = undefined;
+    }
+
+    setDOM(dom){
+        this.#DOM = dom;
+    }
+
+    off(){
+        console.log()
+        if(this.getStatus() === "ON"){
+            this.setStatus('OFF');
+            this.#DOM.querySelector(".machine-button-on").classList.remove("on");
+            this.#DOM.querySelector(".machine-button-on").classList.add("off");
+            return true;
+        }else{
+            return false;
+        }
     }
 
     putACup(cup = undefined){

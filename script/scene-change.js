@@ -148,6 +148,8 @@ const changeSceneToGameplay = (chosenCM) => {
             </section>
         `;
 
+        currentCoffeeMachine.setDOM(document.querySelector(".machine"));
+
         document.querySelectorAll(".outlet").forEach(outlet => {
             outlet.addEventListener("click", () => {
                 const voltage = parseInt(outlet.id.split("-")[1]);
@@ -193,6 +195,32 @@ const changeSceneToGameplay = (chosenCM) => {
                     }, 500);
                 }
             });
+        });
+
+        document.querySelector(".machine-button-on").addEventListener("click", () => {
+            let button = document.querySelector(".machine-button-on");
+
+            if(button.classList.contains("on")){
+                currentCoffeeMachine.off();
+            }else if(button.classList.contains("off")){
+                let turnOn = currentCoffeeMachine.on();
+                if(turnOn.on){
+                    button.classList.remove("off")
+                    button.classList.add("on")
+                    playAudio("./audio/beep.mp3");
+                }else{
+                    if(turnOn.cause === ERRORS.VOLTAGE_OVER){
+                        button.classList.toggle("off")
+                        button.classList.toggle("on")
+                        playAudio("./audio/beep.mp3");
+                        setTimeout(() => {
+                            button.classList.toggle("off")
+                            button.classList.toggle("on")
+                            playAudio("./audio/burn.mp3");
+                        }, 100)
+                    }
+                }
+            }
         });
 
         main.classList.add("loaded")

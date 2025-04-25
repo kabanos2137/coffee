@@ -1,5 +1,5 @@
 class ElectricDevice {
-    #psu; #voltage; #power; #status; #powerOnCounter; #usable; #error; #faultsCounter; #pluggedInVoltage
+    #psu; #voltage; #power; #status; #powerOnCounter; #usable; #error; #faultsCounter; #pluggedInVoltage;
 
     constructor(psu, voltage, power) {
         this.#psu = psu;
@@ -11,6 +11,14 @@ class ElectricDevice {
         this.#error = ERRORS.NO_ERROR;
         this.#faultsCounter = 0;
         this.#pluggedInVoltage = 0;
+    }
+
+    getStatus(){
+        return this.#status
+    }
+
+    setStatus(status) {
+        this.#status = status
     }
 
     plugIn(voltage){
