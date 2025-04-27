@@ -1,7 +1,18 @@
+const POSSIBLE_RANDOM_ERRORS = [
+    ERRORS.ELECTRONICS_FAILURE,
+    ERRORS.FROTHER_FAILURE,
+    ERRORS.OVERHEATING,
+    ERRORS.POWER_SUPPLY_FAILURE,
+    ERRORS.PUMP_FAILURE,
+    ERRORS.SEAL_DAMAGE,
+    ERRORS.WATER_PRESSURE_LOW
+]
+
 class CoffeeMachine extends HouseholdDevice {
-    #capsule; #streamID; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
+    #MTBF; #uses; #capsule; #streamID; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
     constructor(psu, voltage, power, energyClass, MTBF, size, milkTankCapacity, waterTankCapacity, pressure, name, status) {
         super(psu, voltage, power, energyClass, MTBF, size);
+        this.#MTBF = MTBF;
         this.#milkTankCapacity = milkTankCapacity;
         this.#waterTankCapacity = waterTankCapacity;
         this.#pressure = pressure;
@@ -13,6 +24,23 @@ class CoffeeMachine extends HouseholdDevice {
         this.#cup = undefined;
         this.#streamID = undefined;
         this.#capsule = undefined;
+        this.#uses = 0;
+    }
+
+    checkForRandomError() {
+        const lambda = 1 / ((30 * this.#MTBF) / 50000);
+        const probability = 1 - Math.exp(-lambda * this.#uses);
+        const random = Math.random();
+        console.log(random, probability, lambda);
+        if (random < probability) {
+            let error = POSSIBLE_RANDOM_ERRORS.random();
+            this.#uses = 0;
+            this.setError(error, false);
+            playAudio("./audio/burn.mp3")
+            this.off();
+        }else{
+            return false;
+        }
     }
 
     repair(){
@@ -27,6 +55,10 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     startMake() {
+        let randomErrors = this.checkForRandomError()
+        if(randomErrors) return;
+
+        this.#uses++;
         if(this.checkIfReadyToUse()){
             this.#DOM.querySelector(".machine-button-make").classList.remove("off");
             this.#DOM.querySelector(".machine-button-make").classList.add("on");
@@ -65,6 +97,11 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     startClean() {
+        let randomErrors = this.checkForRandomError()
+        console.log(randomErrors);
+        if(randomErrors) return;
+
+        this.#uses++;
         if(this.checkIfReadyToUse()){
             this.#DOM.querySelector(".machine-button-clean").classList.remove("off");
             this.#DOM.querySelector(".machine-button-clean").classList.add("on");

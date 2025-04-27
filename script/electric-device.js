@@ -133,7 +133,9 @@ class ElectricDevice {
         return `Device powered by ${psu} with nominal voltage of ${this.#voltage} [V] is ${status}. Device was broken ${this.#faultsCounter} times. Total number of device starts: ${this.#powerOnCounter}.`
     }
 
-    setError(error){
+    setError(error, usable = true){
+        this.#faultsCounter++;
         this.#error = error;
+        this.#usable = usable;
     }
 }

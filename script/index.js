@@ -1,6 +1,9 @@
 let streamAudio;
 let audio;
 
+Array.prototype.random = function () {
+    return this[Math.floor((Math.random()*this.length))];
+}
 
 const COFFEE_TYPES = [
     { name: "Espresso", colors: ["#6f4e37", "#3b2918"], fullness: 100 },
@@ -35,8 +38,51 @@ const ERRORS = {
         description: "the cleanliness of the machine was neglected",
         data: [1, 0, 0, 0, 0, 0],
         divided: ["the cleanliness", "of the machine", "was neglected"]
+    },
+    POWER_SUPPLY_FAILURE: {
+        name: "POWER_SUPPLY_FAILURE",
+        description: "power supply failure detected",
+        data: [0, 1, 0, 0, 0, 0],
+        divided: ["power supply", "failure", "detected"]
+    },
+    SEAL_DAMAGE: {
+        name: "SEAL_DAMAGE",
+        description: "damage to seals or hoses",
+        data: [0, 0, 1, 0, 0, 0],
+        divided: ["damage to", "seals or hoses", ""]
+    },
+    PUMP_FAILURE: {
+        name: "PUMP_FAILURE",
+        description: "pump malfunction",
+        data: [0, 0, 0, 1, 0, 0],
+        divided: ["pump", "malfunction", ""]
+    },
+    FROTHER_FAILURE: {
+        name: "FROTHER_FAILURE",
+        description: "frother failure",
+        data: [0, 0, 0, 0, 1, 0],
+        divided: ["frother", "failure", ""]
+    },
+    ELECTRONICS_FAILURE: {
+        name: "ELECTRONICS_FAILURE",
+        description: "electronic component malfunction",
+        data: [0, 0, 0, 0, 0, 1],
+        divided: ["electronic", "component", "malfunction"]
+    },
+    OVERHEATING: {
+        name: "OVERHEATING",
+        description: "machine is overheating",
+        data: [0, 0, 0, 0, 0, 1],
+        divided: ["machine", "is overheating", ""]
+    },
+    WATER_PRESSURE_LOW: {
+        name: "WATER_PRESSURE_LOW",
+        description: "water pressure is too low",
+        data: [1, 0, 0, 0, 0, 0],
+        divided: ["water pressure", "is too low", ""]
     }
-}
+};
+
 
 const onLoad = () => {
     let subtitle = document.querySelector("h6");
