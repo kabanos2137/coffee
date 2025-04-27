@@ -137,7 +137,7 @@ main.details {
         align-items: center;
         flex-direction: row;
         width: 95%;
-        height: calc(50% - 25px);
+        height: 35%;
     }
 
     & > h4 {

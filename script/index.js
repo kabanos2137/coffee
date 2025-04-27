@@ -3,12 +3,12 @@ let audio;
 
 
 const COFFEE_TYPES = [
-  "Espresso",
-  "Americano",
-  "Latte",
-  "Cappuccino",
-  "Mocha",
-  "Macchiato"
+    { name: "Espresso", colors: ["#6f4e37", "#3b2918"], fullness: 100 },
+    { name: "Americano", colors: ["#4f2a17", "#2b1a0f"], fullness: 100 },
+    { name: "Latte", colors: ["#d3b38c", "#96765b"], fullness: 100 },
+    { name: "Cappuccino", colors: ["#b2977d", "#73503c"], fullness: 100 },
+    { name: "Mocha", colors: ["#704214", "#40210f"], fullness: 100 },
+    { name: "Macchiato", colors: ["#8b5e3c", "#482c1b"], fullness: 100 }
 ];
 
 const ERRORS = {

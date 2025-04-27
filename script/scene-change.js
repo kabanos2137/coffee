@@ -151,10 +151,27 @@ const changeSceneToGameplay = (chosenCM) => {
 
         currentCoffeeMachine.setDOM(document.querySelector(".machine"));
 
+        document.querySelector(".capsule-slot").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
+        document.querySelector(".capsule-slot").addEventListener("mouseover", () => {
+            if(currentCoffeeMachine.hasCapsule()){
+                document.querySelector("#info").innerText = "Remove Capsule";
+            }
+        });
+
+        document.querySelector(".capsule-slot").addEventListener("click", () => {
+            let removeCapsule = currentCoffeeMachine.removeCapsule();
+            if(!removeCapsule) return;
+            trash()
+        });
+
         Array.from(document.querySelectorAll(".capsule-group")).forEach((element, index) => {
             element.addEventListener("mouseover", () => {
-                document.querySelector("#info").innerText = COFFEE_TYPES[index];
-            })
+                document.querySelector("#info").innerText = COFFEE_TYPES[index].name;
+            });
+
+            element.addEventListener("click", () => {
+                currentCoffeeMachine.setCapsule(COFFEE_TYPES[index])
+            });
 
             element.addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
         });
@@ -201,17 +218,7 @@ const changeSceneToGameplay = (chosenCM) => {
                     let remove = currentCoffeeMachine.removeCup();
                     if(!remove) return;
                     machine.classList.add("no-cup")
-                    playAudio("./audio/trash.mp3")
 
-                    Array.from(document.querySelectorAll(".trash-can-lid")).forEach(lid => {
-                        lid.classList.add("open-lid");
-                    });
-
-                    setTimeout(() => {
-                        Array.from(document.querySelectorAll(".trash-can-lid")).forEach(lid => {
-                            lid.classList.remove("open-lid");
-                        });
-                    }, 500);
                 }
             });
         });
@@ -300,4 +307,18 @@ const moveCup = () => {
 
         machineSVG.classList.remove("no-cup")
     }
+}
+
+const trash = () => {
+    playAudio("./audio/trash.mp3")
+
+    Array.from(document.querySelectorAll(".trash-can-lid")).forEach(lid => {
+        lid.classList.add("open-lid");
+    });
+
+    setTimeout(() => {
+        Array.from(document.querySelectorAll(".trash-can-lid")).forEach(lid => {
+            lid.classList.remove("open-lid");
+        });
+    }, 500);
 }

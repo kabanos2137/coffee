@@ -1,5 +1,5 @@
 class CoffeeMachine extends HouseholdDevice {
-    #streamID; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
+    #capsule; #streamID; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
     constructor(psu, voltage, power, energyClass, MTBF, size, milkTankCapacity, waterTankCapacity, pressure, name, status) {
         super(psu, voltage, power, energyClass, MTBF, size);
         this.#milkTankCapacity = milkTankCapacity;
@@ -12,6 +12,7 @@ class CoffeeMachine extends HouseholdDevice {
         this.#hasACup = false;
         this.#cup = undefined;
         this.#streamID = undefined;
+        this.#capsule = undefined;
     }
 
     repair(){
@@ -63,15 +64,33 @@ class CoffeeMachine extends HouseholdDevice {
         if(this.#DOM.querySelector(".machine-button-clean").classList.contains("on")){
             clearInterval(this.#streamID);
             stopAudio(true);
+            playAudio("./audio/beep.mp3");
             this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
             this.#DOM.querySelector(".machine-button-clean").classList.add("off");
             this.#streamID = undefined;
         }
     }
 
+    removeCapsule(){
+        if(!this.#capsule && this.#streamID) return false;
+        this.#capsule = undefined;
+        return true;
+    }
+
+    hasCapsule(){
+        return this.#capsule !== undefined;
+    }
+
+    setCapsule(capsule){
+        if(this.#capsule) return;
+        this.#capsule = capsule;
+        playAudio("./audio/slot.wav");
+    }
+
     off(){
         if(this.getStatus() === "ON"){
             this.setStatus('OFF');
+            playAudio("./audio/beep.mp3");
             this.#DOM.querySelector(".machine-button-on").classList.remove("on");
             this.#DOM.querySelector(".machine-button-on").classList.add("off");
             this.breakClean()
