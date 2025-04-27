@@ -1,12 +1,12 @@
 function generateCapsules(xOffset, yOffset, count) {
     let capsules = '';
-    const cols = 4; // 4 kapsułki na półkę
-    const rows = 3; // 3 rzędy kapsułek
-    const gap = 140; // Odstęp między kapsułkami
+    const cols = 4;
+    const rows = 3;
+    const gap = 140;
 
     for (let i = 0; i < count; i++) {
         let x = xOffset + (i % cols) * gap;
-        let y = yOffset + Math.floor(i / cols) * (gap - 20); // Przesunięcie w pionie dla każdego rzędu
+        let y = yOffset + Math.floor(i / cols) * (gap - 20);
         capsules += `<g class="capsule-group" transform="translate(${x},${y})">${CAPSULE}</g>\n`;
     }
 

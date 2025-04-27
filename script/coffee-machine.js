@@ -147,8 +147,8 @@ class CoffeeMachine extends HouseholdDevice {
                     this.#DOM.querySelector(".machine-button-clean").classList.add("off");
                 });
             }else{
-                let decrementInterval = 8000 / 20; // 20 steps in 8 seconds
-                let decrementValue = 20 / 20; // Total decrement divided by steps
+                let decrementInterval = 8000 / 20; 
+                let decrementValue = 20 / 20;
                 let steps = 20;
                 this.#streamID = setInterval(() => {
                     this.#cleanliness -= decrementValue;
