@@ -75,7 +75,7 @@ class ElectricDevice {
     }
 
     checkIfReadyToUse() {
-        return this.#status === 'ON';
+        return this.#status === 'ON' && this.getUsable();
     }
 
     off(){

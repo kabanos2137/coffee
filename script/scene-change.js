@@ -170,7 +170,7 @@ const changeSceneToGameplay = (chosenCM) => {
             });
 
             element.addEventListener("click", () => {
-                currentCoffeeMachine.setCapsule(COFFEE_TYPES[index])
+                currentCoffeeMachine.setCapsule({...COFFEE_TYPES[index]})
             });
 
             element.addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
@@ -184,8 +184,13 @@ const changeSceneToGameplay = (chosenCM) => {
             document.querySelector("#info").innerText = "Cleaning Button";
         });
 
+        document.querySelector(".machine-button-make").addEventListener("mouseover", () => {
+            document.querySelector("#info").innerText = "Make Coffee Button";
+        });
+
         document.querySelector(".machine-button-on").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
         document.querySelector(".machine-button-clean").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
+        document.querySelector(".machine-button-make").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
 
         document.querySelectorAll(".outlet").forEach(outlet => {
             outlet.addEventListener("click", () => {
@@ -218,7 +223,7 @@ const changeSceneToGameplay = (chosenCM) => {
                     let remove = currentCoffeeMachine.removeCup();
                     if(!remove) return;
                     machine.classList.add("no-cup")
-
+                    trash()
                 }
             });
         });
@@ -256,6 +261,21 @@ const changeSceneToGameplay = (chosenCM) => {
                 currentCoffeeMachine.breakClean();
             }else if(button.classList.contains("off")){
                 let turnOn = currentCoffeeMachine.startClean();
+                if(turnOn){
+                    button.classList.remove("off")
+                    button.classList.add("on")
+                    playAudio("./audio/beep.mp3");
+                }
+            }
+        });
+
+        document.querySelector(".machine-button-make").addEventListener("click", () => {
+            let button = document.querySelector(".machine-button-make");
+
+            if(button.classList.contains("on")){
+                currentCoffeeMachine.breakMake();
+            }else if(button.classList.contains("off")){
+                let turnOn = currentCoffeeMachine.startMake();
                 if(turnOn){
                     button.classList.remove("off")
                     button.classList.add("on")

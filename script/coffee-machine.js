@@ -26,13 +26,51 @@ class CoffeeMachine extends HouseholdDevice {
         this.#DOM = dom;
     }
 
+    startMake() {
+        if(this.checkIfReadyToUse()){
+            this.#DOM.querySelector(".machine-button-make").classList.remove("off");
+            this.#DOM.querySelector(".machine-button-make").classList.add("on");
+            playAudio("./audio/pour.mp3", true)
+            if(this.hasACup() && this.#capsule){
+                this.addLayer([this.#capsule.colors[0], this.#capsule.colors[1], "#ccccff"], 100, () => {
+                    this.#DOM.querySelector(".machine-button-make").classList.remove("on");
+                    this.#DOM.querySelector(".machine-button-make").classList.add("off");
+                }, true);
+            }else if(this.#capsule === undefined){
+                this.addLayer([null, null, "#ccccff"], 100, () => {
+                    this.#DOM.querySelector(".machine-button-make").classList.remove("on");
+                    this.#DOM.querySelector(".machine-button-make").classList.add("off");
+                }, true);
+            }else{
+                let decrementInterval = 8000 / 20; // 20 steps in 8 seconds
+                let decrementValue = 20 / 20; // Total decrement divided by steps
+                let steps = 20;
+                this.#streamID = setInterval(() => {
+                    this.#cleanliness -= decrementValue;
+                    if(this.#cleanliness < 20){
+                        this.setError(ERRORS.SEVERE_DIRT);
+                        this.setUsable(false);
+                    }
+                    steps--;
+                    if (steps <= 0) {
+                        clearInterval(this.#streamID);
+                        this.#DOM.querySelector(".machine-button-make").classList.remove("on");
+                        this.#DOM.querySelector(".machine-button-make").classList.add("off");
+                        this.#streamID = undefined;
+                    }
+                }, decrementInterval);
+                return true;
+            }
+        }
+    }
+
     startClean() {
         if(this.checkIfReadyToUse()){
             this.#DOM.querySelector(".machine-button-clean").classList.remove("off");
             this.#DOM.querySelector(".machine-button-clean").classList.add("on");
             playAudio("./audio/pour.mp3", true)
             if(this.hasACup()){
-                this.addLayer("#ccccff", 55, () => {
+                this.addLayer(["#ccccff"], 55, () => {
                     this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
                     this.#DOM.querySelector(".machine-button-clean").classList.add("off");
                 });
@@ -44,6 +82,7 @@ class CoffeeMachine extends HouseholdDevice {
                     this.#cleanliness -= decrementValue;
                     if(this.#cleanliness < 20){
                         this.setError(ERRORS.SEVERE_DIRT);
+                        this.setUsable(false);
                     }
                     steps--;
                     if (steps <= 0) {
@@ -60,6 +99,17 @@ class CoffeeMachine extends HouseholdDevice {
         }
     }
 
+    breakMake(){
+        if(this.#DOM.querySelector(".machine-button-make").classList.contains("on")){
+            clearInterval(this.#streamID);
+            stopAudio(true);
+            playAudio("./audio/beep.mp3");
+            this.#DOM.querySelector(".machine-button-make").classList.remove("on");
+            this.#DOM.querySelector(".machine-button-make").classList.add("off");
+            this.#streamID = undefined;
+        }
+    }
+
     breakClean(){
         if(this.#DOM.querySelector(".machine-button-clean").classList.contains("on")){
             clearInterval(this.#streamID);
@@ -72,7 +122,7 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     removeCapsule(){
-        if(!this.#capsule && this.#streamID) return false;
+        if(!this.#capsule || this.#streamID) return false;
         this.#capsule = undefined;
         return true;
     }
@@ -143,47 +193,105 @@ class CoffeeMachine extends HouseholdDevice {
     getWaterTankCapacity(){
         return this.#waterTankCapacity
     }
-
-    addLayer(color, fluidEnd, onFinish){
+    addLayer(color, fluidEnd, onFinish, coffee = false) {
         const gradient = this.#DOM.querySelector("#coffee-gradient");
         const endElement = this.#DOM.querySelector("#end-element");
         const start = this.#cup.fullness;
         const end = start + fluidEnd;
         const step = (end - start) / (8 * 60);
 
-        const stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
-        const stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+        const stops = [];
 
-        stop1.setAttribute("offset", `${start}%`);
-        stop1.setAttribute("stop-color", color);
+        const createStop = (offset, color) => {
+            const stop = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+            stop.setAttribute("offset", `${offset}%`);
+            stop.setAttribute("stop-color", color);
+            gradient.insertBefore(stop, endElement);
+            return stop;
+        };
 
-        stop2.setAttribute("offset", `${start}%`);
-        stop2.setAttribute("stop-color", color);
+        let capsuleFullness = this.#capsule ? this.#capsule.fullness : undefined;
+        let zones = [];
 
-        gradient.insertBefore(stop1, endElement);
-        gradient.insertBefore(stop2, endElement);
+        if (coffee) {
+            if (capsuleFullness === undefined || capsuleFullness === 0) {
+                zones = [{ from: start, to: end, color: color[2] }];
+            } else if (capsuleFullness > 0 && capsuleFullness <= 50) {
+                const coffeeEnd = start + fluidEnd * (capsuleFullness / 100);
+                zones = [
+                    { from: start, to: coffeeEnd, color: color[1] },
+                    { from: coffeeEnd, to: end, color: color[2] }
+                ];
+            } else if (capsuleFullness > 50 && capsuleFullness < 100) {
+                const espressoEnd = start + fluidEnd * ((capsuleFullness - 50) / 100);
+                const lungoEnd = espressoEnd + fluidEnd * (50 / 100);
+                zones = [
+                    { from: start, to: espressoEnd, color: color[0] },
+                    { from: espressoEnd, to: lungoEnd, color: color[1] },
+                    { from: lungoEnd, to: end, color: color[2] }
+                ];
+            } else if (capsuleFullness === 100) {
+                const espressoEnd = start + fluidEnd * (50 / 100);
+                zones = [
+                    { from: start, to: espressoEnd, color: color[0] },
+                    { from: espressoEnd, to: end, color: color[1] }
+                ];
+            }
+        } else {
+            zones = [{ from: start, to: end, color: color[0] }];
+        }
+
+        // Tworzymy stopery na starcie
+        zones.forEach(zone => {
+            const stopStart = createStop(0, zone.color);
+            const stopEnd = createStop(0, zone.color);
+            stops.push({ start: zone.from, end: zone.to, stopStart, stopEnd });
+        });
 
         let current = start;
+        let lastCurrent = start;
+
         this.#streamID = setInterval(() => {
             current += step;
+            this.#cup.fullness = current;
 
-            if(current <= 100){
-                endElement.setAttribute("offset", `${current}%`);
-                stop2.setAttribute("offset", `${current}%`);
-                this.#cup.fullness = current;
-            }else{
+            let filled = current;
+
+            stops.forEach(({ start, end, stopStart, stopEnd }) => {
+                const zoneSize = end - start;
+                if (filled >= start) {
+                    let percent = ((filled - start) / zoneSize) * (zoneSize / (end - start)) * 100;
+                    if (filled > end) percent = 100;
+                    if (percent < 0) percent = 0;
+                    if (percent > 100) percent = 100;
+
+                    stopStart.setAttribute("offset", `${start}%`);
+                    stopEnd.setAttribute("offset", `${Math.min(current, end)}%`);
+                }
+            });
+
+            endElement.setAttribute("offset", `${Math.min(current, 100)}%`);
+
+            let delta = current - lastCurrent;
+
+            if (coffee && this.#capsule && this.#capsule.fullness > 0) {
+                this.#capsule.fullness -= delta;
+                if (this.#capsule.fullness < 0) this.#capsule.fullness = 0;
+            }
+
+            lastCurrent = current;
+
+            if (!coffee) {
                 this.#cleanliness -= 0.1;
-                if(this.#cleanliness < 20){
+                if (this.#cleanliness < 20) {
                     this.setError(ERRORS.SEVERE_DIRT);
                 }
             }
 
             if (current >= end) {
-                current = end;
-                this.#cup.fullness = current;
                 clearInterval(this.#streamID);
-                if (onFinish) onFinish();
                 this.#streamID = undefined;
+                if (onFinish) onFinish();
             }
         }, 1000 / 60);
     }
