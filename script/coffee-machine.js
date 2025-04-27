@@ -56,41 +56,42 @@ class CoffeeMachine extends HouseholdDevice {
 
     startMake() {
         this.#uses++;
-        if(this.checkIfReadyToUse()){
-            let randomErrors = this.checkForRandomError()
-            if(randomErrors) return;
-            this.#DOM.querySelector(".machine-button-make").classList.remove("off");
-            this.#DOM.querySelector(".machine-button-make").classList.add("on");
-            playAudio("./audio/pour.mp3", true)
-            if(this.hasACup() && this.#capsule){
-                this.addLayer([this.#capsule.colors[0], this.#capsule.colors[1], "#ccccff"], 100, () => {
-                    this.#DOM.querySelector(".machine-button-make").classList.remove("on");
-                    this.#DOM.querySelector(".machine-button-make").classList.add("off");
-                }, true);
-            }else if(this.#capsule === undefined){
-                this.addLayer([null, null, "#ccccff"], 100, () => {
-                    this.#DOM.querySelector(".machine-button-make").classList.remove("on");
-                    this.#DOM.querySelector(".machine-button-make").classList.add("off");
-                }, true);
-            }else{
-                let decrementInterval = 8000 / 20; // 20 steps in 8 seconds
-                let decrementValue = 20 / 20; // Total decrement divided by steps
+        if (this.checkIfReadyToUse()) {
+            let randomErrors = this.checkForRandomError();
+            if (randomErrors) return;
+            const makeButton = this.#DOM.querySelector(".machine-button-make");
+            makeButton.classList.remove("off");
+            makeButton.classList.add("on");
+            playAudio("./audio/pour.mp3", true);
+
+            if (!this.hasACup() && this.#capsule) {
+                let decrementInterval = 8000 / 20;
                 let steps = 20;
                 this.#streamID = setInterval(() => {
-                    this.#cleanliness -= decrementValue;
-                    if(this.#cleanliness < 20){
-                        this.setError(ERRORS.SEVERE_DIRT);
-                        this.setUsable(false);
-                    }
+                    this.#capsule.fullness -= 2.5;
+                    if (this.#capsule.fullness <= 0) this.#capsule.fullness = 0;
+
                     steps--;
                     if (steps <= 0) {
                         clearInterval(this.#streamID);
-                        this.#DOM.querySelector(".machine-button-make").classList.remove("on");
-                        this.#DOM.querySelector(".machine-button-make").classList.add("off");
+                        makeButton.classList.remove("on");
+                        makeButton.classList.add("off");
                         this.#streamID = undefined;
                     }
                 }, decrementInterval);
                 return true;
+            }
+
+            if (this.hasACup() && this.#capsule) {
+                this.addLayer([this.#capsule.colors[0], this.#capsule.colors[1], "#ccccff"], 100, () => {
+                    makeButton.classList.remove("on");
+                    makeButton.classList.add("off");
+                }, true);
+            } else if (this.#capsule === undefined) {
+                this.addLayer([null, null, "#ccccff"], 100, () => {
+                    makeButton.classList.remove("on");
+                    makeButton.classList.add("off");
+                }, true);
             }
         }
     }
@@ -119,6 +120,7 @@ class CoffeeMachine extends HouseholdDevice {
                         this.setUsable(false);
                     }
                     steps--;
+
                     if (steps <= 0) {
                         clearInterval(this.#streamID);
                         this.#DOM.querySelector(".machine-button-clean").classList.remove("on");
