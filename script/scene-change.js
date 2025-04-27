@@ -158,6 +158,16 @@ const changeSceneToGameplay = (chosenCM) => {
             }
         });
 
+        document.querySelector("#diagnosis > svg").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
+        document.querySelector("#diagnosis > svg").addEventListener("mouseover", () => {
+            document.querySelector("#info").innerText = "Carry out a diagnosis";
+        });
+
+        document.querySelector("#cup-dispenser").addEventListener("mouseleave", () => document.querySelector("#info").innerText = "");
+        document.querySelector("#cup-dispenser").addEventListener("mouseover", () => {
+            document.querySelector("#info").innerText = "Get a cup";
+        });
+
         document.querySelector(".capsule-slot").addEventListener("click", () => {
             let removeCapsule = currentCoffeeMachine.removeCapsule();
             if(!removeCapsule) return;

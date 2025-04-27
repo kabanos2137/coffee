@@ -1,3 +1,10 @@
+/**
+ * The HouseholdDevice class extends the ElectricDevice class and represents a household appliance with specific
+ * properties such as energy efficiency, mean time between failure (MTBF), and physical dimensions.
+ * This class provides methods to retrieve information about the device's characteristics and status.
+ *
+ * Inherits from the ElectricDevice class.
+ */
 class HouseholdDevice extends ElectricDevice {
     #MTBF; #energyClass; #lCycles; #size;
     constructor(psu, voltage, power, energyClass, MTBF, size) {

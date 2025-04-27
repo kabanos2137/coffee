@@ -1,6 +1,15 @@
 let streamAudio;
 let audio;
 
+/**
+ * Returns a random element from the array.
+ * This method selects a random index within the array's bounds
+ * and retrieves the element at that index.
+ *
+ * Note: This function operates on the array it is invoked on and does not modify the array.
+ *
+ * @returns {*} A randomly selected element from the array.
+ */
 Array.prototype.random = function () {
     return this[Math.floor((Math.random()*this.length))];
 }
@@ -117,6 +126,11 @@ const onLoad = () => {
         element.children[0].addEventListener("mouseleave", () => {
             subtitle.innerText = "SELECT YOUR COFFEE MACHINE"
         })
+    });
+
+    document.addEventListener("click", () => {
+        const music = document.getElementById("music");
+        music.play();
     });
 }
 

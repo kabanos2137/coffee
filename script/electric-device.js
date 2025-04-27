@@ -1,3 +1,7 @@
+/**
+ * Represents an electronic device with specific power settings, functionality, and status.
+ * Provides methods to manage the device's status, check its usability, handle errors, and obtain reports.
+ */
 class ElectricDevice {
     #psu; #voltage; #power; #status; #powerOnCounter; #usable; #error; #faultsCounter; #pluggedInVoltage;
 

@@ -8,6 +8,43 @@ const POSSIBLE_RANDOM_ERRORS = [
     ERRORS.WATER_PRESSURE_LOW
 ]
 
+/**
+ * Represents a coffee machine capable of performing various actions such as brewing coffee,
+ * cleaning, managing capsules, and maintaining machine state. This class provides methods to control and monitor
+ * its operations and status, ensure proper functioning, and handle cleaning, repairs, and errors.
+ *
+ * CoffeeMachine operates with a modular design, integrating seamlessly with a DOM-based interface for interactive
+ * functionality. It simulates processes such as coffee brewing with layer building, cleaning cycles, error management,
+ * and maintenance tasks.
+ *
+ * CoffeeMachine is an extension of `HouseholdDevice`, inheriting basic appliance properties and adding features
+ * specific to coffee machines, such as handling capsules, water and milk tanks, along with pressure control.
+ *
+ * Encapsulated private properties include:
+ * - `#MTBF` (Mean Time Between Failures) and `#uses`: Tracks machine reliability and usage statistics.
+ * - `#capsule`: Stores the inserted coffee capsule details.
+ * - `#milkTank`, `#waterTank`, and their respective capacities: Manage tank levels.
+ * - `#pressure`: Reflects brewing system pressure.
+ * - `#cleanliness`: Tracks internal cleanliness levels.
+ * - `#hasACup` and `#cup`: Manages cup presence and state.
+ * - `#DOM`: The DOM interface for UI interaction.
+ * - `#streamID`: Manages active brewing or cleaning processes.
+ *
+ * Key functionality:
+ * - **Brewing Coffee**: `startMake`, `breakMake`, `hasCapsule`, `setCapsule`, and `removeCapsule` control the coffee brewing process.
+ * - **Cleaning Cycle**: `startClean` and `breakClean` manage the cleaning cycle and internal tank cleanliness.
+ * - **Maintenance**: Includes methods like `repair` and error handling (`checkForRandomError`), ensuring smooth functionality.
+ * - **Cup Handling**: Methods like `putACup`, `removeCup`, and `hasACup` deal with the coffee cup integration.
+ * - **Property Accessors**: Methods are exposed to retrieve various internal properties including `getName`, `getPressure`, `getMilkTankCapacity`, and `getWaterTankCapacity`.
+ *
+ * Advanced simulation includes:
+ * - Building coffee or cleaning layers using the `addLayer` method.
+ * - Error simulation during operations based on MTBF and usage statistics (`checkForRandomError`).
+ * - Interactive DOM manipulation for status updates, error prompts, and progress indications.
+ *
+ * This class is designed to simulate realistic coffee machine behaviors while being lightweight
+ * and modular for extension or customization.
+ */
 class CoffeeMachine extends HouseholdDevice {
     #MTBF; #uses; #capsule; #streamID; #cleanliness; #waterTank; #milkTank; #milkTankCapacity; #waterTankCapacity; #pressure; #name; #hasACup; #cup; #DOM;
     constructor(psu, voltage, power, energyClass, MTBF, size, milkTankCapacity, waterTankCapacity, pressure, name, status) {
@@ -31,10 +68,11 @@ class CoffeeMachine extends HouseholdDevice {
         const lambda = 1 / ((30 * this.#MTBF) / 50000);
         const probability = 1 - Math.exp(-lambda * this.#uses);
         const random = Math.random();
-        console.log(random, probability, lambda);
         if (random < probability) {
             let error = POSSIBLE_RANDOM_ERRORS.random();
             this.#uses = 0;
+            clearInterval(this.#streamID);
+            this.#streamID = undefined;
             this.setError(error, false);
             playAudio("./audio/burn.mp3")
             this.off();
@@ -99,8 +137,7 @@ class CoffeeMachine extends HouseholdDevice {
     startClean() {
         this.#uses++;
         if(this.checkIfReadyToUse()){
-            let randomErrors = this.checkForRandomError
-            if(randomErrors) return;
+            if(this.checkForRandomError()) return;
             this.#DOM.querySelector(".machine-button-clean").classList.remove("off");
             this.#DOM.querySelector(".machine-button-clean").classList.add("on");
             playAudio("./audio/pour.mp3", true)
