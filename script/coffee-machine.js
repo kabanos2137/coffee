@@ -55,11 +55,10 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     startMake() {
-        let randomErrors = this.checkForRandomError()
-        if(randomErrors) return;
-
         this.#uses++;
         if(this.checkIfReadyToUse()){
+            let randomErrors = this.checkForRandomError()
+            if(randomErrors) return;
             this.#DOM.querySelector(".machine-button-make").classList.remove("off");
             this.#DOM.querySelector(".machine-button-make").classList.add("on");
             playAudio("./audio/pour.mp3", true)
@@ -97,12 +96,10 @@ class CoffeeMachine extends HouseholdDevice {
     }
 
     startClean() {
-        let randomErrors = this.checkForRandomError()
-        console.log(randomErrors);
-        if(randomErrors) return;
-
         this.#uses++;
         if(this.checkIfReadyToUse()){
+            let randomErrors = this.checkForRandomError
+            if(randomErrors) return;
             this.#DOM.querySelector(".machine-button-clean").classList.remove("off");
             this.#DOM.querySelector(".machine-button-clean").classList.add("on");
             playAudio("./audio/pour.mp3", true)
